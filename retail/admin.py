@@ -17,7 +17,8 @@ def clear_debt(modeladmin, request, queryset):
 class DealerAdmin(admin.ModelAdmin):
     list_display = ('title', 'email', 'country', 'city', 'street', 'house_number', 'view_shipper_link', 'created',
                     'dealer_type', 'level', 'debt', 'get_debt', 'get_products_')
-    list_filter = ('country',)
+    list_filter = ('city',)
+    search_fields = ('country',)
     actions = [clear_debt]
 
     def get_queryset(self, request):
