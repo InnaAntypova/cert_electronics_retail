@@ -1,5 +1,7 @@
 from django.db import models
 
+from config import settings
+
 NULLABLE = {'null': True, 'blank': True}
 
 
@@ -10,6 +12,7 @@ class Products(models.Model):
     product_release_date = models.DateField(verbose_name='Дата выхода продукта на рынок', **NULLABLE)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Цена')
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь владелец')
 
     def __str__(self):
         return f'{self.title} {self.model}'
@@ -40,9 +43,10 @@ class Dealer(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время создания')
     dealer_type = models.CharField(choices=TYPE, verbose_name='Тип звена торговой сети')
     level = models.SmallIntegerField(verbose_name='Уровень иерархии в торговой сети', **NULLABLE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь владелец')
 
     def save(self, *args, **kwargs):
-        if self.dealer_type == 'FACTORY':  # Завод всегда на нулевом уровне
+        if not self.shipper or self.dealer_type == 'FACTORY':  # Нет поставщика выше\Завод всегда на нулевом уровне
             self.level = 0
         else:
             self.level = self.shipper.level + 1  # следующий уровень от поставщика

@@ -7,7 +7,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Products
-        fields = ['title', 'model', 'product_release_date', 'price', 'quantity']
+        fields = ['title', 'model', 'product_release_date', 'price', 'quantity', 'owner']
 
 
 class DealerSerializer(serializers.ModelSerializer):
@@ -25,7 +25,7 @@ class DealerCreateSerializer(serializers.ModelSerializer):
     """ Сериализатор для создания экземпляра модели Dealer (Дилер) """
     class Meta:
         model = Dealer
-        fields = ['title', 'dealer_type', 'email', 'country', 'city', 'street', 'house_number', 'shipper']
+        fields = ['title', 'dealer_type', 'email', 'country', 'city', 'street', 'house_number', 'shipper', 'owner']
 
 
 class DealerUpdateSerializer(serializers.ModelSerializer):
